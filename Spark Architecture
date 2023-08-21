@@ -1,0 +1,41 @@
+%%{
+  init: {
+    'theme': 'neutral',
+    'themeVariables': {
+      'primaryColor': '#254abb',
+      'primaryTextColor': '#fff',
+      'primaryBorderColor': '#254abb',
+      'lineColor': '#F8B229',
+      'secondaryColor': '#006100',
+      'tertiaryColor': '#fff'
+    },
+    'themeCSS': '.messageText, .noteText, .participant, .actor, .boxLabel { font-size: 50px; }'
+  }
+}%%
+
+graph TD
+    User["User/Developer"]
+    Client["Cluster Client (Driver Program)"]
+    Master["Cluster Manager (Master)"]
+    Worker1["Worker Node 1<br/>11 Core CPU & 18 GB RAM"]
+    Worker2["Worker Node 2<br/>11 Core CPU & 18 GB RAM"]
+    Executor1["Executor 1<br/>5 Core CPU & 8 GB RAM<br/>1 Core for background<br/>1 GB for OS<br/>Tasks = Cores"]
+    Executor2["Executor 2<br/>5 Core CPU & 8 GB RAM<br/>1 Core for background<br/>1 GB for OS<br/>Tasks = Cores"]
+    Task1["Task 1"]
+    Task2["Task 2"]
+
+    User -->|1. Submit Spark Application| Client
+    Client -->|2. Request resources for the application| Master
+    Master -->|3. Allocate resources| Worker1
+    Master -->|3. Allocate resources| Worker2
+    Worker1 -->|4. Launch Executor| Executor1
+    Worker2 -->|4. Launch Executor| Executor2
+    Client -->|5. Send application code and tasks| Executor1
+    Client -->|5. Send application code and tasks| Executor2
+    Executor1 -->|6. Run Task| Task1
+    Executor2 -->|6. Run Task| Task2
+    Task1 -->|7. Return results| Executor1
+    Task2 -->|7. Return results| Executor2
+    Executor1 -->|8. Send results| Client
+    Executor2 -->|8. Send results| Client
+    Client -->|9. Display aggregated results| User
