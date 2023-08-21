@@ -1,0 +1,19 @@
+sequenceDiagram
+    participant Data as "Data Collection"
+    participant Preprocess as "Data Preprocessing"
+    participant Kernel as "Kernel Selection"
+    participant Hyperparam as "Hyperparameter Tuning"
+    participant Train as "Training SVR"
+    participant Validate as "Model Validation"
+    participant Adjust as "Adjust Hyperparameters"
+    participant Forecast as "Forecasting"
+
+    Data ->> Preprocess: Passes raw data
+    Preprocess ->> Kernel: Passes normalized/standardized data
+    Kernel ->> Hyperparam: Suggest potential kernel (linear, polynomial, RBF, etc.)
+    Hyperparam ->> Train: Set initial C, epsilon, gamma values
+    Train ->> Validate: Evaluate model performance on validation set
+    Validate ->> Adjust: Feedback on model performance
+    Adjust ->> Train: Adjust hyperparameters based on validation feedback
+    Train ->> Forecast: Use trained model for forecasting
+    Note over Data, Forecast: Repeat until optimal hyperparameters are found
